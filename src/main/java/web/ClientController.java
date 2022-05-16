@@ -1,15 +1,23 @@
-package com.example.service_to_booking_visit.web;
+package web;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import persistance.Client;
+import service.ClientService;
 
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/clients")
 public class ClientController {
+
 
     private final ClientService clientService;
 
     @GetMapping
-    ResponseEntity<List<getAll>> getAll() {
+    ResponseEntity<List<Client>> getAll() {
         return ResponseEntity.ok(clientService.findAll());
     }
 
@@ -25,7 +33,7 @@ public class ClientController {
 
     @DeleteMapping
     public void delete(@PathVariable Long id) {
-        return clientService.deleteById(id);
+        clientService.deleteById(id);
     }
 
 }

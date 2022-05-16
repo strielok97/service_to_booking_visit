@@ -3,11 +3,12 @@ package service;
 import lombok.RequiredArgsConstructor;
 import persistance.Client;
 import persistance.Service;
+import repository.ServiceRepository;
 
 import javax.persistence.Entity;
 import java.util.List;
 
-@Entity
+@org.springframework.stereotype.Service
 @RequiredArgsConstructor
 public class ServiceService {
 
@@ -18,7 +19,7 @@ public class ServiceService {
     }
 
     public Service save(Service service) {
-        return serviceRepository.save(client);
+        return serviceRepository.save(service);
     }
 
     public List<Service> findAll() {

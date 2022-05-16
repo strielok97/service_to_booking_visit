@@ -1,12 +1,17 @@
-package com.example.service_to_booking_visit.web;
+package web;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import persistance.Calendar;
 import persistance.Client;
+import service.CalendarService;
 
 import java.util.List;
 
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/calendars")
 public class CalendarController {
 
     private final CalendarService calendarService;
@@ -22,12 +27,12 @@ public class CalendarController {
     }
 
     @PostMapping
-    public ResponseEntity<Client> save(@RequestBody Calendar calendar) {
+    public ResponseEntity<Calendar> save(@RequestBody Calendar calendar) {
         return ResponseEntity.ok(calendarService.save(calendar));
     }
 
     @DeleteMapping
     public void delete(@PathVariable Long id) {
-        return calendarService.deleteById(id);
+        calendarService.deleteById(id);
     }
 }

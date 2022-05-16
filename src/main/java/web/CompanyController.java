@@ -1,16 +1,23 @@
-package com.example.service_to_booking_visit.web;
+package web;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import persistance.Client;
 import persistance.Company;
+import service.CompanyService;
 
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/companies")
 public class CompanyController {
 
     private final CompanyService companyService;
 
     @GetMapping
-    ResponseEntity<List<getAll>> getAll() {
+    ResponseEntity<List<Company>> getAll() {
         return ResponseEntity.ok(companyService.findAll());
     }
 
@@ -26,6 +33,6 @@ public class CompanyController {
 
     @DeleteMapping
     public void delete(@PathVariable Long id) {
-        return companyService.deleteById(id);
+        companyService.deleteById(id);
     }
 }

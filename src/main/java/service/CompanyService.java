@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import persistance.Client;
 import persistance.Company;
+import repository.CompanyRepository;
 
 import java.util.List;
 

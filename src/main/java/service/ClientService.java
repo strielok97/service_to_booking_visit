@@ -3,6 +3,7 @@ package service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import persistance.Client;
+import repository.ClientRepository;
 
 import java.util.List;
 

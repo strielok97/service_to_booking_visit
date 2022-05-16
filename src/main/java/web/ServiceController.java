@@ -1,12 +1,17 @@
-package com.example.service_to_booking_visit.web;
+package web;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import persistance.Client;
 import persistance.Service;
+import service.ServiceService;
 
 import java.util.List;
 
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/services")
 public class ServiceController {
 
     private final ServiceService serviceService;
@@ -22,12 +27,12 @@ public class ServiceController {
     }
 
     @PostMapping
-    public ResponseEntity<Client> save(@RequestBody Service service) {
+    public ResponseEntity<Service> save(@RequestBody Service service) {
         return ResponseEntity.ok(serviceService.save(service));
     }
 
     @DeleteMapping
     public void delete(@PathVariable Long id) {
-        return serviceService.serviceById(id);
+        serviceService.findById(id);
     }
 }

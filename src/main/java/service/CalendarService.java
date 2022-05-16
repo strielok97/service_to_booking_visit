@@ -1,13 +1,15 @@
 package service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import persistance.Calendar;
 import persistance.Client;
+import repository.CalendarRepository;
 
 import javax.persistence.Entity;
 import java.util.List;
 
-@Entity
+@Service
 @RequiredArgsConstructor
 public class CalendarService {
     private final CalendarRepository calendarRepository;

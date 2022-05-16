@@ -1,21 +1,28 @@
-package com.example.service_to_booking_visit.web;
+package web;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import persistance.Client;
 import persistance.Reservation;
+import service.ReservationService;
 
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/reservations")
 public class ReservationController {
 
     private final ReservationService reservationService;
 
     @GetMapping
-    ResponseEntity<List<getAll>> getAll() {
-        return ResponseEntity.ok(reservationService.find());
+    ResponseEntity<List<Reservation>> getAll() {
+        return ResponseEntity.ok(reservationService.findAll());
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Client> getId(@PathVariable Long id){
+    ResponseEntity<Reservation> getId(@PathVariable Long id){
         return ResponseEntity.ok(reservationService.findById(id));
     }
 
@@ -26,6 +33,6 @@ public class ReservationController {
 
     @DeleteMapping
     public void delete(@PathVariable Long id) {
-        return reservationService.deleteById(id);
+        reservationService.deleteById(id);
     }
 }
