@@ -33,6 +33,6 @@ public class ServiceController {
 
     @DeleteMapping
     public void delete(@PathVariable Long id) {
-        serviceService.findById(id);
+        serviceService.deleteById(id);
     }
 }

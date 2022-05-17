@@ -1,11 +1,9 @@
 package service;
 
 import lombok.RequiredArgsConstructor;
-import persistance.Client;
 import persistance.Service;
 import repository.ServiceRepository;
 
-import javax.persistence.Entity;
 import java.util.List;
 
 @org.springframework.stereotype.Service
