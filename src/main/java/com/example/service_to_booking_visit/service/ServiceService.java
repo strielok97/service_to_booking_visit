@@ -1,8 +1,8 @@
-package service;
+package com.example.service_to_booking_visit.service;
 
 import lombok.RequiredArgsConstructor;
-import persistance.Service;
-import repository.ServiceRepository;
+import com.example.service_to_booking_visit.persistance.Service;
+import com.example.service_to_booking_visit.repository.ServiceRepository;
 
 import java.util.List;
 
