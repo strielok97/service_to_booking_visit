@@ -1,4 +1,4 @@
-package persistance;
+package com.example.service_to_booking_visit.persistance;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

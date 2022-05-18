@@ -1,4 +1,4 @@
-package persistance;
+package com.example.service_to_booking_visit.persistance;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,16 +11,21 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Client {
+public class Company {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName;
-    private String lastName;
-    private Integer phoneNumber;
+    private String companyName;
+    private String city;
+    private Long NIP;
+
+
+    @OneToOne
+    private Calendar calendar;
 
     @OneToMany
-    private List<Reservation> reservationList;
+    private List<Service> serviceList;
+
 
 }
