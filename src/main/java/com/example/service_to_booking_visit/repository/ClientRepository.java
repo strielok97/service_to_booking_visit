@@ -1,7 +1,7 @@
-package repository;
+package com.example.service_to_booking_visit.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import persistance.Client;
+import com.example.service_to_booking_visit.persistance.Client;
 
 public interface ClientRepository extends JpaRepository<Client, Long> {
 

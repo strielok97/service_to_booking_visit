@@ -1,12 +1,11 @@
-package service;
+package com.example.service_to_booking_visit.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import persistance.Client;
-import persistance.Reservation;
-import repository.ReservationRepository;
+import com.example.service_to_booking_visit.persistance.Client;
+import com.example.service_to_booking_visit.persistance.Reservation;
+import com.example.service_to_booking_visit.repository.ReservationRepository;
 
-import javax.persistence.Entity;
 import java.util.List;
 
 @Service
