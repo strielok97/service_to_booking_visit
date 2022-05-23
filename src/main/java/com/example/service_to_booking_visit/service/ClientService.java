@@ -1,5 +1,6 @@
 package com.example.service_to_booking_visit.service;
 
+import com.example.service_to_booking_visit.persistance.Reservation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.example.service_to_booking_visit.persistance.Client;
@@ -28,5 +29,7 @@ public class ClientService {
     public void deleteById(Long id) {
         clientRepository.deleteById(id);
     }
+
+
 
 }
