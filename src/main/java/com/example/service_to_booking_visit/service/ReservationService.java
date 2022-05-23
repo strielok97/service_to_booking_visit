@@ -12,6 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReservationService {
     private final ReservationRepository reservationRepository;
+    private final CalendarService calendarService;
 
     public Reservation findById(Long id) {
         return reservationRepository.findById(id).orElseThrow();
@@ -27,6 +28,20 @@ public class ReservationService {
 
     public void deleteById(Long id) {
         reservationRepository.deleteById(id);
+    }
+
+    private void addReservationToCalendar(Long calendarId, Long reservationId) {
+        calendarService.findById(calendarId).getReservationList().add(reservationRepository.getById(reservationId));
+    }
+
+    private void addReservationToClient(Long clientId, Long reservationId) {
+        calendarService.findById(clientId).getReservationList().add(reservationRepository.getById(reservationId));
+    }
+
+    public Reservation bookVisit(Long clientId, Long reservationId, Long calendarId){
+        addReservationToCalendar(calendarId, reservationId);
+        addReservationToClient(clientId, reservationId);
+        return save(reservationRepository.getById(reservationId));
     }
 
 }
