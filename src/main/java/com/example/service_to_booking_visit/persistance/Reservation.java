@@ -18,7 +18,6 @@ public class Reservation {
     private Long id;
     private LocalDate date;
     private String place;
-
     @OneToOne
     private Service service;
 }

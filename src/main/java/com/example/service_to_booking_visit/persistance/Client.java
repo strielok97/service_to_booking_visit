@@ -23,4 +23,7 @@ public class Client {
     @OneToMany
     private List<Reservation> reservationList;
 
+//    @OneToOne
+//    private Calendar calendar;
+
 }
