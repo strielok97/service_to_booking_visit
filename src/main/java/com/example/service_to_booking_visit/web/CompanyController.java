@@ -28,6 +28,18 @@ public class CompanyController {
         return ResponseEntity.ok(companyService.findAll(pageable));
     }
 
+    @GetMapping("/{city}/companies?size=X&page=Y")
+    public ResponseEntity<Page<Company>> getAllByCity(@RequestParam int size, @RequestParam int page, @PathVariable String city) {
+        if (size == 0) {
+            size = 25;
+        }
+        if (page == 0) {
+            page = 1;
+        }
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(companyService.findAllByCity(city,pageable));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Company> getId(@PathVariable Long id){
         return ResponseEntity.ok(companyService.findById(id));
@@ -38,7 +50,7 @@ public class CompanyController {
         return ResponseEntity.ok(companyService.save(company));
     }
 
-    @DeleteMapping
+    @DeleteMapping("delete/{id}")
     public void delete(@PathVariable Long id) {
         companyService.deleteById(id);
     }
