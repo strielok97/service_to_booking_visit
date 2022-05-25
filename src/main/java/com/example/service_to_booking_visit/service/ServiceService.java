@@ -3,6 +3,8 @@ package com.example.service_to_booking_visit.service;
 import lombok.RequiredArgsConstructor;
 import com.example.service_to_booking_visit.persistance.Service;
 import com.example.service_to_booking_visit.repository.ServiceRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -29,7 +31,16 @@ public class ServiceService {
     }
 
     public List<Service> getAvailableServicesByLocalization(String city) {
-       return serviceRepository.findServicesByCity(city);
+        return serviceRepository.findServicesByCity(city);
     }
+
+    public Page<Service> getServicesByPriceAsc(Pageable pageable) {
+        return serviceRepository.sortServicesByPriceAsc(pageable);
+    }
+
+    public Page<Service> getServicesByPriceDesc(Pageable pageable) {
+        return serviceRepository.sortServicesByPriceDesc(pageable);
+    }
+
 
 }

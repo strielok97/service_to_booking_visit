@@ -7,4 +7,5 @@ import com.example.service_to_booking_visit.persistance.Company;
 
 public interface CompanyRepository extends JpaRepository<Company, Long> {
     Page<Company> findAllByCity(String city, Pageable pageable);
+
 }
