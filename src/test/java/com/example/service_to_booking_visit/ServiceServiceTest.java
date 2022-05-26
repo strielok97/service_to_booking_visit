@@ -47,10 +47,10 @@ class ServiceServiceTest {
                 new Service(21L,"Malowanie paznokci", 150.0 )
         );
 
-        List<Company> companyList = List.of(
-                new Company(1L,"ABBA","Olsztyn", null, null, firstServiceList),
-                new Company(19L,"Queen","Sopot", null, null, firstServiceList)
-        );
+//        List<Company> companyList = List.of(
+//                new Company(1L,"ABBA","Olsztyn", null, null, firstServiceList),
+//                new Company(19L,"Queen","Sopot", null, null, firstServiceList)
+//        );
 
         Mockito.when(companyRepository.findAllByCity("Olsztyn",PageRequest.of(0,25)))
                 .thenReturn(new PageImpl<Company>(Collections.EMPTY_LIST));
