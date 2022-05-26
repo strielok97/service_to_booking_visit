@@ -27,5 +27,8 @@ public class Company {
     @OneToMany
     private List<Service> serviceList;
 
+    @OneToMany
+    private List<Review> reviewList;
+
 
 }
