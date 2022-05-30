@@ -1,4 +1,4 @@
-package com.example.service_to_booking_visit;
+package com.example.service_to_booking_visit.service;
 
 import com.example.service_to_booking_visit.persistance.Company;
 import com.example.service_to_booking_visit.persistance.Service;
