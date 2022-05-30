@@ -1,6 +1,5 @@
 package com.example.service_to_booking_visit.service;
 
-import com.example.service_to_booking_visit.enumerated.Rating;
 import com.example.service_to_booking_visit.persistance.Review;
 import com.example.service_to_booking_visit.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,14 +32,10 @@ public class ReviewService {
     }
 
     public Double getAverageCompanyRating(Long companyId) {
-        int size = companyService.findById(companyId).getReviewList().size();
-        int sumRating = companyService.findById(companyId).getReviewList().stream()
-                .map(Review::getRating)
-                .map(Rating::getScore)
-                .mapToInt(Integer::intValue)
-                .sum();
-
-        return (double) sumRating / size;
+        return companyService.findById(companyId).getReviewList().stream()
+                .mapToInt(Review::getRating)
+                .average()
+                .orElse(0);
     }
 
     public void deleteById(Long id) {
