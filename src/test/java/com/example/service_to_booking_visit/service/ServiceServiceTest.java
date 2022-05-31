@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -43,8 +44,8 @@ class ServiceServiceTest {
     @BeforeEach
     void setUp(){
         List<Service> firstServiceList = List.of(
-                new Service(2L,"Strzyzenie", 100.0 ),
-                new Service(21L,"Malowanie paznokci", 150.0 )
+                new Service(2L,"Strzyzenie", 100.0, Duration.ofMinutes(20)),
+                new Service(21L,"Malowanie paznokci", 150.0, Duration.ofMinutes(30))
         );
 
 //        List<Company> companyList = List.of(

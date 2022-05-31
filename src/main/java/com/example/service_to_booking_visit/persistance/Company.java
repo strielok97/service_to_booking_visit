@@ -30,5 +30,8 @@ public class Company {
     @OneToMany
     private List<Review> reviewList;
 
+    @OneToMany
+    private List<WorkingDay> workingDayList;
+
 
 }
