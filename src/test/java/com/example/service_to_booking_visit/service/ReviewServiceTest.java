@@ -37,7 +37,7 @@ class ReviewServiceTest {
                 new Review(12L, 5, "idealnie, bez zastrzeżeń"),
                 new Review(5L, 3, "długi czas oczekiwania")
         );
-        company = new Company(1L, "ABBA", "Olsztyn", null, null, null, reviewList);
+        company = new Company(1L, "ABBA", "Olsztyn", null, null, null, reviewList, null);
     }
 
 
