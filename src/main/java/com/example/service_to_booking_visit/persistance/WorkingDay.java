@@ -19,8 +19,8 @@ public class WorkingDay {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    DayOfWeek day;
-    String startingHour;
-    String endingHour;
+    private DayOfWeek day;
+    private String startingHour;
+    private String endingHour;
 
 }

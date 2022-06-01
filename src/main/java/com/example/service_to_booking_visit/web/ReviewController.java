@@ -40,7 +40,6 @@ public class ReviewController {
         return ResponseEntity.ok(reviewService.rateCompany(review,companyId));
     }
 
-
     @DeleteMapping
     public void delete(@PathVariable Long id) {
         reviewService.deleteById(id);

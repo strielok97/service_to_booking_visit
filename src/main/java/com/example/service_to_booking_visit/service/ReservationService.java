@@ -15,6 +15,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final CalendarService calendarService;
     private final ClientService clientService;
+    private final CompanyService companyService;
 
     public Reservation findById(Long id) {
         return reservationRepository.findById(id)
@@ -39,6 +40,11 @@ public class ReservationService {
                 .add(findById(reservationId));
         calendarService.save(calendar);
     }
+
+//    public boolean isGivenTimeValid(Long reservationId, Long companyId, Long dayId) {
+//        if (findById(reservationId).getReservationDate()
+//                .isAfter(companyService.findById(companyId).getWorkingDayList().find))
+//    }
 
     public void addReservationToClient(Long clientId, Long reservationId) {
         Client client = clientService.findById(clientId);

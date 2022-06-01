@@ -40,12 +40,13 @@ class ServiceServiceTest {
     private CompanyService companyService;
 
     List<Service> firstServiceList;
+    String str = "";
 
     @BeforeEach
     void setUp(){
         List<Service> firstServiceList = List.of(
-                new Service(2L,"Strzyzenie", 100.0, Duration.ofMinutes(20)),
-                new Service(21L,"Malowanie paznokci", 150.0, Duration.ofMinutes(30))
+                new Service(2L,"Strzyzenie", 100.0, str),
+                new Service(21L,"Malowanie paznokci", 150.0, str)
         );
 
 //        List<Company> companyList = List.of(
