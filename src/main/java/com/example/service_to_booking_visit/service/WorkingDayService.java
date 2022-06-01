@@ -1,0 +1,31 @@
+package com.example.service_to_booking_visit.service;
+
+import com.example.service_to_booking_visit.persistance.WorkingDay;
+import com.example.service_to_booking_visit.repository.WorkingDayRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class WorkingDayService {
+
+    private final WorkingDayRepository workingDayRepository;
+
+    public WorkingDay findById(Long id) {
+        return workingDayRepository.findById(id).orElseThrow();
+    }
+
+    public WorkingDay save(WorkingDay workingDay) {
+        return workingDayRepository.save(workingDay);
+    }
+
+    public List<WorkingDay> findAll() {
+        return workingDayRepository.findAll();
+    }
+
+    public void deleteById(Long id) {
+        workingDayRepository.deleteById(id);
+    }
+}

@@ -32,6 +32,11 @@ class ReservationServiceTest {
 //    @InjectMocks
 //    ClientService clientService;
 
+    @Mock
+    ClientRepository clientRepository;
+    @InjectMocks
+    ClientService clientService;
+
     Client client;
     Reservation reservation;
     Calendar calendar;
