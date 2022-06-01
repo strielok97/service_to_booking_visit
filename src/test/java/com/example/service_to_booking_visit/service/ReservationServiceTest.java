@@ -3,6 +3,7 @@ package com.example.service_to_booking_visit.service;
 import com.example.service_to_booking_visit.persistance.Calendar;
 import com.example.service_to_booking_visit.persistance.Client;
 import com.example.service_to_booking_visit.persistance.Reservation;
+import com.example.service_to_booking_visit.repository.ClientRepository;
 import com.example.service_to_booking_visit.repository.ReservationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,10 @@ class ReservationServiceTest {
     CalendarService calendarService;
     @InjectMocks
     ReservationService reservationService;
+//    @Mock
+//    ClientRepository clientRepository;
+//    @InjectMocks
+//    ClientService clientService;
 
     Client client;
     Reservation reservation;
@@ -40,17 +45,31 @@ class ReservationServiceTest {
     }
 
     @Test
-    void shouldAddReservationToClient(){
+    void shouldAddReservationToCalendar(){
         // given
         Mockito.when(calendarService.findById(any())).thenReturn(calendar);
         Mockito.when(reservationRepository.findById(any())).thenReturn(Optional.of(reservation));
-        int currentSize = client.getReservationList().size();
+        int currentSize = calendar.getReservationList().size();
         //when
-        reservationService.addReservationToClient(1L,5L);
+        reservationService.addReservationToCalendar(1L,5L);
         //then
-        int result = client.getReservationList().size();
+        int result = calendar.getReservationList().size();
         assertEquals(currentSize+1, result);
     }
+//
+//    @Test
+//    void shouldAddReservationToClient(){
+//        // given
+//        Mockito.when(calendarService.findById(any())).thenReturn(calendar);
+//        Mockito.when(clientService.findById(any())).thenReturn(client);
+//        Mockito.when(reservationRepository.findById(any())).thenReturn(Optional.of(reservation));
+//        int currentSize = client.getReservationList().size();
+//        //when
+//        reservationService.addReservationToCalendar(1L,5L);
+//        //then
+//        int result = client.getReservationList().size();
+//        assertEquals(currentSize+1, result);
+//    }
 
     @Test
     void shouldAddReservationToCalendar(){

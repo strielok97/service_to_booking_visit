@@ -14,6 +14,7 @@ import java.util.List;
 public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final CalendarService calendarService;
+    private final ClientService clientService;
 
     public Reservation findById(Long id) {
         return reservationRepository.findById(id)
@@ -34,16 +35,16 @@ public class ReservationService {
 
     public void addReservationToCalendar(Long calendarId, Long reservationId) {
         Calendar calendar = calendarService.findById(calendarId);
-                calendar.getReservationList()
+        calendar.getReservationList()
                 .add(findById(reservationId));
         calendarService.save(calendar);
     }
 
     public void addReservationToClient(Long clientId, Long reservationId) {
-        Calendar calendar = calendarService.findById(clientId);
-        calendar.getReservationList()
+        Client client = clientService.findById(clientId);
+        client.getReservationList()
                 .add(findById(reservationId));
-        calendarService.save(calendar);
+        clientService.save(client);
     }
 
     public void bookVisit(Long clientId, Long reservationId, Long calendarId){
