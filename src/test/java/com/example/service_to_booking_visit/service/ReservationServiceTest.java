@@ -52,4 +52,17 @@ class ReservationServiceTest {
         assertEquals(currentSize+1, result);
     }
 
+    @Test
+    void shouldAddReservationToCalendar(){
+        // given
+        Mockito.when(calendarService.findById(any())).thenReturn(calendar);
+        Mockito.when(reservationRepository.findById(any())).thenReturn(Optional.of(reservation));
+        int currentSize = client.getReservationList().size();
+        //when
+        reservationService.addReservationToCalendar(1L,5L);
+        //then
+        int result = client.getReservationList().size();
+        assertEquals(currentSize+1, result);
+    }
+
 }

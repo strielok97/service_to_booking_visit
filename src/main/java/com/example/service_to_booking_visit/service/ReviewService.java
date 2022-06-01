@@ -32,11 +32,15 @@ public class ReviewService {
     }
 
     public Double getAverageCompanyRating(Long companyId) {
-        return companyService.findById(companyId).getReviewList().stream()
-                .mapToInt(Review::getRating)
-                .average()
-                .orElse(0);
+        return reviewRepository.getAverageCompanyRating(companyId);
     }
+
+//    public Double getAverageCompanyRating(Long companyId) {
+//        return companyService.findById(companyId).getReviewList().stream()
+//                .mapToInt(Review::getRating)
+//                .average()
+//                .orElse(0);
+//    }
 
     public void deleteById(Long id) {
         reviewRepository.deleteById(id);

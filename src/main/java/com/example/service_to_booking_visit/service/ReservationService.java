@@ -39,8 +39,8 @@ public class ReservationService {
         calendarService.save(calendar);
     }
 
-    public void addReservationToClient(Long calendarId, Long reservationId) {
-        Calendar calendar = calendarService.findById(calendarId);
+    public void addReservationToClient(Long clientId, Long reservationId) {
+        Calendar calendar = calendarService.findById(clientId);
         calendar.getReservationList()
                 .add(findById(reservationId));
         calendarService.save(calendar);
