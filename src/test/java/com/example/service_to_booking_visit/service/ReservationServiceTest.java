@@ -77,7 +77,7 @@ class ReservationServiceTest {
 //    }
 
     @Test
-    void shouldAddReservationToCalendar(){
+    void shouldAddReservationToClient(){
         // given
         Mockito.when(calendarService.findById(any())).thenReturn(calendar);
         Mockito.when(reservationRepository.findById(any())).thenReturn(Optional.of(reservation));

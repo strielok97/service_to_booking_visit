@@ -17,7 +17,7 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime reservationDate;
+    private LocalDateTime date;
     private String place;
     @OneToOne
     private Service service;

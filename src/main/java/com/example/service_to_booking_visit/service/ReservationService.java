@@ -1,12 +1,13 @@
 package com.example.service_to_booking_visit.service;
 
-import com.example.service_to_booking_visit.persistance.Calendar;
+import com.example.service_to_booking_visit.persistance.*;
+import com.example.service_to_booking_visit.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.example.service_to_booking_visit.persistance.Client;
-import com.example.service_to_booking_visit.persistance.Reservation;
-import com.example.service_to_booking_visit.repository.ReservationRepository;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -41,10 +42,30 @@ public class ReservationService {
         calendarService.save(calendar);
     }
 
-//    public boolean isGivenTimeValid(Long reservationId, Long companyId, Long dayId) {
-//        if (findById(reservationId).getReservationDate()
-//                .isAfter(companyService.findById(companyId).getWorkingDayList().find))
-//    }
+    private WorkingDay companyWorkingDay(Company company, DayOfWeek reservationDay) {
+        return company.getWorkingDayList().stream()
+                .filter(d -> d.getDay().equals(reservationDay))
+                .findFirst().orElseThrow(() -> new RuntimeException("Company is not working at " + reservationDay));
+    }
+
+
+
+    public boolean isGivenTimeValid(Reservation reservation, Long companyId)  {
+        LocalDateTime reservationDate = reservation.getDate();
+        DayOfWeek reservationDay = reservationDate.getDayOfWeek();
+        Company company = companyService.findById(companyId);
+
+        WorkingDay workingDay = companyWorkingDay(company, reservationDay);
+
+        String companyStartingHourInGivenDay = workingDay.getStartingHour();
+        String companyEndingHourInGivenDay = workingDay.getEndingHour();
+
+        LocalTime openingTime = LocalTime.parse(companyStartingHourInGivenDay);
+        LocalTime closingTime = LocalTime.parse(companyEndingHourInGivenDay);
+        LocalTime reservationTime = reservationDate.toLocalTime();
+
+        return reservationTime.isAfter(openingTime) && reservationTime.isBefore(closingTime);
+    }
 
     public void addReservationToClient(Long clientId, Long reservationId) {
         Client client = clientService.findById(clientId);
