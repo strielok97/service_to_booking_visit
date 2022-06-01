@@ -1,6 +1,7 @@
 package com.example.service_to_booking_visit.web;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.service_to_booking_visit.persistance.Client;
@@ -34,5 +35,11 @@ public class ReservationController {
     @DeleteMapping
     public void delete(@PathVariable Long id) {
         reservationService.deleteById(id);
+    }
+
+    @PostMapping("/{reservationId}/client/{clientId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public void addReservationToCalendar(@PathVariable Long clientId, @PathVariable Long reservationId){
+        reservationService.addReservationToClient(clientId, reservationId);
     }
 }
