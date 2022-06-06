@@ -39,7 +39,7 @@ public class ReservationController {
 
     @PostMapping("/client/{clientId}")
     @ResponseStatus(value = HttpStatus.OK)
-    public void addReservationToCalendar(@PathVariable Long clientId, Reservation reservation){
-        reservationService.addReservationToClient(clientId, reservation);
+    public void addReservationToWorkingDay(@PathVariable Long clientId, Long workingDayId){
+        reservationService.addReservationToClient(clientId, workingDayId);
     }
 }
