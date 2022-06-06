@@ -17,7 +17,6 @@ public class ReservationService {
     private final CalendarService calendarService;
     private final ClientService clientService;
     private final CompanyService companyService;
-
     private final WorkingDayService workingDayService;
 
     public Reservation findById(Long id) {
@@ -37,20 +36,21 @@ public class ReservationService {
         reservationRepository.deleteById(id);
     }
 
-    public void addReservationToCalendar(Long calendarId, Long reservationId) {
-        Calendar calendar = calendarService.findById(calendarId);
-        calendar.getReservationList()
-                .add(findById(reservationId));
-        calendarService.save(calendar);
-    }
-
     private WorkingDay companyWorkingDay(Company company, DayOfWeek reservationDay) {
         return company.getWorkingDayList().stream()
                 .filter(d -> d.getDay().equals(reservationDay))
                 .findFirst().orElseThrow(() -> new RuntimeException("Company is not working at " + reservationDay));
     }
 
-    public boolean doesCompanyWorksInGivenTime(Reservation reservation, Long companyId) {
+    private WorkingDay getWorkingDay(Reservation reservation, Long companyId) {
+        return companyService.findById(companyId).getCalendar().getWorkingDayList()
+                .stream()
+                .filter(t -> t.getDate().equals(reservation.getDate().toLocalDate()))
+                .findAny()
+                .orElseThrow();
+    }
+
+    public boolean doesCompanyWorkInGivenTime(Reservation reservation, Long companyId) {
         LocalDateTime reservationDate = reservation.getDate();
         DayOfWeek reservationDay = reservationDate.getDayOfWeek();
         Company company = companyService.findById(companyId);
@@ -67,52 +67,46 @@ public class ReservationService {
         return reservationTime.isAfter(openingTime) && reservationTime.isBefore(closingTime);
     }
 
-    public boolean isReservationTimeAvailable(Reservation reservation, Long companyId) {
-        LocalTime reservationStart = reservation.getDate().toLocalTime();
-        Long timeDuration = Long.parseLong(reservation.getService().getDurationInMinutes());
-        LocalTime reservationEnd = reservationStart
-                .plusMinutes(timeDuration);
+    private LocalTime getTimeOfReservationEnd(Reservation reservation){
+        String reservationDuration = reservation.getService().getDurationInMinutes();
+        return reservation.getDate().toLocalTime().plusMinutes(Long.parseLong(reservationDuration));
+    }
 
-        WorkingDay reservationDayAtGivenCompany = getWorkingDay(reservation, companyId);
+    public boolean isReservationTimeAvailable(Reservation myReservation, Long companyId) {
+        LocalTime myReservationStart = myReservation.getDate().toLocalTime();
+        LocalTime myReservationEnd = getTimeOfReservationEnd(myReservation);
 
-//        List<LocalTime> reservationTimesAtGivenDay = reservationDayAtGivenCompany.getReservationList()
-//                .stream()
-//                .map(t -> t.getDate())
-//
-//
-//        for (LocalTime r : reservationTimesAtGivenDay) {
-//            if (isGivenTermIsAvailable(reservationStart, reservationEnd, r)) {
-//                return false;
-//            }
-//        }
+        WorkingDay reservationDayAtGivenCompany = getWorkingDay(myReservation, companyId);
+
+        List<Reservation> reservationListAtGivenDay = reservationDayAtGivenCompany.getReservationList();
+
+        for (Reservation otherReservation : reservationListAtGivenDay) {
+            LocalTime otherReservationStart = otherReservation.getDate().toLocalTime();
+            LocalTime otherReservationEnd = getTimeOfReservationEnd(otherReservation);
+
+            if (isGivenTermIsAvailable(otherReservationStart, otherReservationEnd, myReservationStart, myReservationEnd)) {
+                return false;
+            }
+        }
         return true;
     }
 
-    private boolean isGivenTermIsAvailable(LocalTime otherReservationStart, LocalTime otherReservationEnd, LocalTime myReservationTime) {
-        return doesAnyReservationIncludeGivenReservation(otherReservationStart, otherReservationEnd, myReservationTime) ||
-                isReservationBetweenStartAndEndAnyReservation(otherReservationStart, myReservationTime) ||
-                isReservationEndBetweenStartAndEndAnyReservation(otherReservationEnd, myReservationTime);
+    private boolean isGivenTermIsAvailable(LocalTime otherReservationStart, LocalTime otherReservationEnd, LocalTime myReservationStart, LocalTime myReservationEnd) {
+        return isOtherReservationBetweenMyReservationStartAndEnd(otherReservationStart, otherReservationEnd, myReservationStart, myReservationEnd) ||
+                isMyReservationStartBetweenStartAndEndOtherReservation(otherReservationStart, otherReservationEnd, myReservationStart) ||
+                isMyReservationEndBetweenStartAndEndOtherReservation(otherReservationStart, otherReservationEnd, myReservationEnd);
     }
 
-    private boolean doesAnyReservationIncludeGivenReservation(LocalTime reservationStart, LocalTime reservationEnd, LocalTime reservationTime) {
-        return (reservationTime.isAfter(reservationStart) && reservationTime.isBefore(reservationEnd));
+    private boolean isOtherReservationBetweenMyReservationStartAndEnd(LocalTime otherReservationStart, LocalTime otherReservationEnd, LocalTime myReservationStart, LocalTime myReservationEnd) {
+        return (myReservationStart.isBefore(otherReservationStart) && myReservationEnd.isAfter(otherReservationEnd));
     }
 
-    private boolean isReservationEndBetweenStartAndEndAnyReservation(LocalTime reservationEnd, LocalTime reservationTime) {
-        return (reservationTime.isBefore(reservationEnd) && reservationTime.isAfter(reservationEnd));
+    private boolean isMyReservationEndBetweenStartAndEndOtherReservation(LocalTime otherReservationStart, LocalTime otherReservationEnd, LocalTime myReservationEnd) {
+        return (myReservationEnd.isBefore(otherReservationEnd) && myReservationEnd.isAfter(otherReservationStart));
     }
 
-    private boolean isReservationBetweenStartAndEndAnyReservation(LocalTime reservationStart, LocalTime reservationTime) {
-        return (reservationTime.isBefore(reservationStart) && reservationTime.isAfter(reservationStart));
-    }
-
-    private WorkingDay getWorkingDay(Reservation reservation, Long companyId) {
-        WorkingDay reservationDayAtGivenCompany = companyService.findById(companyId).getCalendar().getWorkingDayList()
-                .stream()
-                .filter(t -> t.getDate().equals(reservation.getDate().toLocalDate()))
-                .findAny()
-                .orElseThrow();
-        return reservationDayAtGivenCompany;
+    private boolean isMyReservationStartBetweenStartAndEndOtherReservation(LocalTime otherReservationStart, LocalTime otherReservationEnd, LocalTime myReservationStart) {
+        return (myReservationStart.isBefore(otherReservationEnd) && myReservationStart.isAfter(otherReservationStart));
     }
 
     public void addReservationToClient(Long clientId, Long reservationId) {
@@ -122,9 +116,26 @@ public class ReservationService {
         clientService.save(client);
     }
 
-    public void bookVisit(Long clientId, Long reservationId, Long calendarId) {
-        addReservationToCalendar(calendarId, reservationId);
-        addReservationToClient(clientId, reservationId);
+    public void addReservationToWorkingDay(Long workingDayId, Long reservationId) {
+        WorkingDay workingDay = workingDayService.findById(workingDayId);
+        workingDay.getReservationList().add(findById(reservationId));
+        workingDayService.save(workingDay);
+    }
+
+    private boolean isBookingAvaible(Reservation myReservation, Long companyId){
+        boolean avaibility = doesCompanyWorkInGivenTime(myReservation, companyId) && isReservationTimeAvailable(myReservation, companyId);
+        if (avaibility){
+            save(myReservation);
+        }
+        return avaibility;
+    }
+
+
+    public void bookVisit(Long clientId, Reservation myReservation, Long calendarId, Long companyId) {
+        if (isBookingAvaible(myReservation,companyId)){
+            addReservationToWorkingDay(calendarId, myReservation.getId());
+            addReservationToClient(clientId, myReservation.getId());
+        }
     }
 
 }

@@ -27,10 +27,6 @@ class ReservationServiceTest {
     CalendarService calendarService;
     @InjectMocks
     ReservationService reservationService;
-//    @Mock
-//    ClientRepository clientRepository;
-//    @InjectMocks
-//    ClientService clientService;
 
     @Mock
     ClientRepository clientRepository;
@@ -40,27 +36,28 @@ class ReservationServiceTest {
     Client client;
     Reservation reservation;
     Calendar calendar;
-
-    @BeforeEach
-    void setUp(){
-        List<Reservation> reservationList = new ArrayList<>();
-        reservation = new Reservation(5L, null, "Warszawa", null);
-        calendar = new Calendar(1L, null, reservationList);
-        client = new Client(1L, "Anna", "Nowak", 685745892, reservationList);
-    }
-
-    @Test
-    void shouldAddReservationToCalendar(){
-        // given
-        Mockito.when(calendarService.findById(any())).thenReturn(calendar);
-        Mockito.when(reservationRepository.findById(any())).thenReturn(Optional.of(reservation));
-        int currentSize = calendar.getReservationList().size();
-        //when
-        reservationService.addReservationToCalendar(1L,5L);
-        //then
-        int result = calendar.getReservationList().size();
-        assertEquals(currentSize+1, result);
-    }
+//
+//    @BeforeEach
+//    void setUp(){
+//        List<Reservation> reservationList = new ArrayList<>();
+//
+//        reservation = new Reservation(5L, null, "Warszawa", null);
+//        calendar = new Calendar(1L, reservationList);
+//        client = new Client(1L, "Anna", "Nowak", 685745892, reservationList);
+//    }
+//
+//    @Test
+//    void shouldAddReservationToWorkingDay(){
+//        // given
+//        Mockito.when(calendarService.findById(any())).thenReturn(calendar);
+//        Mockito.when(reservationRepository.findById(any())).thenReturn(Optional.of(reservation));
+//        int currentSize = calendar.getReservationList().size();
+//        //when
+//        reservationService.addReservationToWorkingDay(1L,5L);
+//        //then
+//        int result = calendar.getReservationList().size();
+//        assertEquals(currentSize+1, result);
+//    }
 //
 //    @Test
 //    void shouldAddReservationToClient(){
@@ -83,7 +80,7 @@ class ReservationServiceTest {
         Mockito.when(reservationRepository.findById(any())).thenReturn(Optional.of(reservation));
         int currentSize = client.getReservationList().size();
         //when
-        reservationService.addReservationToCalendar(1L,5L);
+        reservationService.addReservationToWorkingDay(1L,5L);
         //then
         int result = client.getReservationList().size();
         assertEquals(currentSize+1, result);
