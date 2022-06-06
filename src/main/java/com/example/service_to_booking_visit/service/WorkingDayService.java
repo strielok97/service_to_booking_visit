@@ -5,6 +5,7 @@ import com.example.service_to_booking_visit.repository.WorkingDayRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -28,4 +29,8 @@ public class WorkingDayService {
     public void deleteById(Long id) {
         workingDayRepository.deleteById(id);
     }
+    public WorkingDay findByDate(LocalDate date){
+        return workingDayRepository.findByDate(date);
+    }
+
 }

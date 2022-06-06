@@ -37,9 +37,9 @@ public class ReservationController {
         reservationService.deleteById(id);
     }
 
-    @PostMapping("/{reservationId}/client/{clientId}")
+    @PostMapping("/client/{clientId}")
     @ResponseStatus(value = HttpStatus.OK)
-    public void addReservationToCalendar(@PathVariable Long clientId, @PathVariable Long reservationId){
-        reservationService.addReservationToClient(clientId, reservationId);
+    public void addReservationToCalendar(@PathVariable Long clientId, Reservation reservation){
+        reservationService.addReservationToClient(clientId, reservation);
     }
 }

@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.time.Duration;
 
 @Entity
 @Data
@@ -21,7 +20,7 @@ public class Service {
     private Long id;
     private String name;
     private Double payment;
-    private String duration;
+    private String durationInMinutes;
 
 
 }

@@ -18,6 +18,8 @@ public class ReservationService {
     private final ClientService clientService;
     private final CompanyService companyService;
 
+    private final WorkingDayService workingDayService;
+
     public Reservation findById(Long id) {
         return reservationRepository.findById(id)
                 .orElseThrow();
@@ -48,9 +50,7 @@ public class ReservationService {
                 .findFirst().orElseThrow(() -> new RuntimeException("Company is not working at " + reservationDay));
     }
 
-
-
-    public boolean isGivenTimeValid(Reservation reservation, Long companyId)  {
+    public boolean doesCompanyWorksInGivenTime(Reservation reservation, Long companyId) {
         LocalDateTime reservationDate = reservation.getDate();
         DayOfWeek reservationDay = reservationDate.getDayOfWeek();
         Company company = companyService.findById(companyId);
@@ -67,6 +67,54 @@ public class ReservationService {
         return reservationTime.isAfter(openingTime) && reservationTime.isBefore(closingTime);
     }
 
+    public boolean isReservationTimeAvailable(Reservation reservation, Long companyId) {
+        LocalTime reservationStart = reservation.getDate().toLocalTime();
+        Long timeDuration = Long.parseLong(reservation.getService().getDurationInMinutes());
+        LocalTime reservationEnd = reservationStart
+                .plusMinutes(timeDuration);
+
+        WorkingDay reservationDayAtGivenCompany = getWorkingDay(reservation, companyId);
+
+//        List<LocalTime> reservationTimesAtGivenDay = reservationDayAtGivenCompany.getReservationList()
+//                .stream()
+//                .map(t -> t.getDate())
+//
+//
+//        for (LocalTime r : reservationTimesAtGivenDay) {
+//            if (isGivenTermIsAvailable(reservationStart, reservationEnd, r)) {
+//                return false;
+//            }
+//        }
+        return true;
+    }
+
+    private boolean isGivenTermIsAvailable(LocalTime otherReservationStart, LocalTime otherReservationEnd, LocalTime myReservationTime) {
+        return doesAnyReservationIncludeGivenReservation(otherReservationStart, otherReservationEnd, myReservationTime) ||
+                isReservationBetweenStartAndEndAnyReservation(otherReservationStart, myReservationTime) ||
+                isReservationEndBetweenStartAndEndAnyReservation(otherReservationEnd, myReservationTime);
+    }
+
+    private boolean doesAnyReservationIncludeGivenReservation(LocalTime reservationStart, LocalTime reservationEnd, LocalTime reservationTime) {
+        return (reservationTime.isAfter(reservationStart) && reservationTime.isBefore(reservationEnd));
+    }
+
+    private boolean isReservationEndBetweenStartAndEndAnyReservation(LocalTime reservationEnd, LocalTime reservationTime) {
+        return (reservationTime.isBefore(reservationEnd) && reservationTime.isAfter(reservationEnd));
+    }
+
+    private boolean isReservationBetweenStartAndEndAnyReservation(LocalTime reservationStart, LocalTime reservationTime) {
+        return (reservationTime.isBefore(reservationStart) && reservationTime.isAfter(reservationStart));
+    }
+
+    private WorkingDay getWorkingDay(Reservation reservation, Long companyId) {
+        WorkingDay reservationDayAtGivenCompany = companyService.findById(companyId).getCalendar().getWorkingDayList()
+                .stream()
+                .filter(t -> t.getDate().equals(reservation.getDate().toLocalDate()))
+                .findAny()
+                .orElseThrow();
+        return reservationDayAtGivenCompany;
+    }
+
     public void addReservationToClient(Long clientId, Long reservationId) {
         Client client = clientService.findById(clientId);
         client.getReservationList()
@@ -74,7 +122,7 @@ public class ReservationService {
         clientService.save(client);
     }
 
-    public void bookVisit(Long clientId, Long reservationId, Long calendarId){
+    public void bookVisit(Long clientId, Long reservationId, Long calendarId) {
         addReservationToCalendar(calendarId, reservationId);
         addReservationToClient(clientId, reservationId);
     }

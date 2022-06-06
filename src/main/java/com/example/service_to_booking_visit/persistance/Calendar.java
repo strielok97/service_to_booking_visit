@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -17,9 +16,9 @@ public class Calendar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime date;
+//    private LocalDateTime date;
 
     @OneToMany
-    private List<Reservation> reservationList;
+    private List<WorkingDay> workingDayList;
 
 }
