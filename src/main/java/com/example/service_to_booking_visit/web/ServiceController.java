@@ -1,5 +1,6 @@
 package com.example.service_to_booking_visit.web;
 
+import com.example.service_to_booking_visit.persistance.WorkingDay;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -56,6 +57,11 @@ public class ServiceController {
     @PostMapping
     public ResponseEntity<Service> save(@RequestBody Service service) {
         return ResponseEntity.ok(serviceService.save(service));
+    }
+
+    @PostMapping("/company/{companyId}")
+    public ResponseEntity<Service> addServiceToCompany(@PathVariable Long companyId, @RequestBody Service service){
+        return ResponseEntity.ok(serviceService.addServiceToCompany(companyId, service));
     }
 
     @DeleteMapping

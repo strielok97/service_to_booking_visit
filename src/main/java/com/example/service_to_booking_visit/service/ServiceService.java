@@ -13,6 +13,7 @@ import java.util.List;
 public class ServiceService {
 
     private final ServiceRepository serviceRepository;
+    private final CompanyService companyService;
 
     public Service findById(Long id) {
         return serviceRepository.findById(id).orElseThrow();
@@ -40,6 +41,11 @@ public class ServiceService {
 
     public Page<Service> getServicesByPriceDesc(Pageable pageable) {
         return serviceRepository.sortServicesByPriceDesc(pageable);
+    }
+
+    public Service addServiceToCompany(Long companyId, Service service){
+        companyService.findById(companyId).getServiceList().add(service);
+        return save(service);
     }
 
 

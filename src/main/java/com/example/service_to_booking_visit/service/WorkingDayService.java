@@ -13,6 +13,7 @@ import java.util.List;
 public class WorkingDayService {
 
     private final WorkingDayRepository workingDayRepository;
+    private final CompanyService companyService;
 
     public WorkingDay findById(Long id) {
         return workingDayRepository.findById(id).orElseThrow();
@@ -31,6 +32,11 @@ public class WorkingDayService {
     }
     public WorkingDay findByDate(LocalDate date){
         return workingDayRepository.findByDate(date);
+    }
+
+    public WorkingDay addWorkingDayToCompany(Long companyId, WorkingDay workingDay){
+        companyService.findById(companyId).getWorkingDayList().add(workingDay);
+        return save(workingDay);
     }
 
 }
