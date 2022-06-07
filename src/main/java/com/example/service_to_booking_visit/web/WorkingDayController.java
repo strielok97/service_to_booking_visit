@@ -11,10 +11,11 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/workingDays")
+@RequestMapping("/workingdays")
 public class WorkingDayController {
 
     private final WorkingDayService workingDayService;
+
 
     @GetMapping
     ResponseEntity<List<WorkingDay>> getAll() {
@@ -29,6 +30,11 @@ public class WorkingDayController {
     @PostMapping
     public ResponseEntity<WorkingDay> save(@RequestBody WorkingDay workingDay) {
         return ResponseEntity.ok(workingDayService.save(workingDay));
+    }
+
+    @PostMapping("/company/{companyId}")
+    public ResponseEntity<WorkingDay> addWorkingDayToCompany(@PathVariable Long companyId,@RequestBody WorkingDay workingDay){
+        return ResponseEntity.ok(workingDayService.addWorkingDayToCompany(companyId, workingDay));
     }
 
     @DeleteMapping

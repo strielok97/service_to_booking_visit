@@ -42,4 +42,9 @@ public class ReservationController {
     public void addReservationToWorkingDay(@PathVariable Long clientId, Long workingDayId){
         reservationService.addReservationToClient(clientId, workingDayId);
     }
+
+    @PostMapping("/client/{clientId}/company/{companyId}")
+    public void bookVisit(@PathVariable Long clientId,@RequestBody Reservation myReservation,Long calendarId,@PathVariable Long companyId){
+        reservationService.bookVisit(clientId, myReservation, calendarId, companyId);
+    }
 }
